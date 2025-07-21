@@ -31,7 +31,7 @@ server.tool(
       content: [
         {
           type: "text",
-          text: `Tarefa criada com sucesso! ID: ${taskId}`,
+          text: `Tarefa criada com sucesso! ID: ${taskId} - Título: ${title}, Descrição: ${description}`,
         },
       ],
     };
