@@ -1,6 +1,7 @@
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import z from "zod";
+import { createServer } from "http";
 
 const server = new McpServer(
   { name: "MCP Server", version: "1.0.0" },
@@ -38,9 +39,26 @@ server.tool(
 );
 
 async function startMcpServer() {
-  const transport = new StdioServerTransport();
+  const PORT = process.env.PORT || 8000;
+
+  const httpServer = createServer();
+  const transport = new StreamableHTTPServerTransport({
+    sessionIdGenerator: () => `session-${Date.now()}-${Math.random()}`,
+  });
+
   await server.connect(transport);
-  console.error("[MCP Server] Servidor MCP iniciado e conectado via stdio.");
+
+  // Configure the HTTP server to handle MCP requests
+  httpServer.on("request", (req, res) => {
+    transport.handleRequest(req, res);
+  });
+
+  httpServer.listen(PORT, () => {
+    console.error(`[MCP Server] Servidor MCP iniciado na porta ${PORT}`);
+    console.error(
+      `[MCP Server] Endpoint disponível em: http://localhost:${PORT}`
+    );
+  });
 }
 
 startMcpServer().catch((error) => {
