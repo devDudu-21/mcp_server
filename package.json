@@ -1,0 +1,32 @@
+{
+  "name": "mcp_server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "bin": "./build/index.js",
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js",
+    "start": "node build/index.js",
+    "dev": "tsx watch src/index.ts"
+  },
+  "keywords": [
+    "mcp",
+    "modelcontextprotocol",
+    "server"
+  ],
+  "author": "Eduardo Fernandes",
+  "license": "ISC",
+  "description": "A server implementation for the Model Context Protocol (MCP)",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.16.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.15",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.3"
+  },
+  "files": [
+    "build"
+  ]
+}
